@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.File;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -9,19 +10,30 @@ import java.util.Scanner;
 public class Main {
     private static final String ERR_MSG = "Invalid ";
     private static final Scanner scanner = new Scanner(System.in);
-    private static final String YEAR_MSG = "year! Please enter YYYY." ;
+    private static final String YEAR_MSG = "year! Please enter YYYY.";
     private static final String MONTH_MSG = "month! Please enter MM(1-12).";
     private static final String DAY_MSG = "day! Please enter DD(1-31).";
     private static final String TIME_PATTERN = "hh:mm:ss a";
+    private static final String FOLDER_PATTERN = "hh_mm_ss";
     private static final String DATE_PATTERN = "EEEE MMMM dd, yyyy";
+    private static final String FOLDER_DATE_PATTERN = "MM_dd_yyyy";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_PATTERN);
+    private static final DateTimeFormatter FOLDER_TIME_FORMATTER = DateTimeFormatter.ofPattern(FOLDER_PATTERN);
+    private static final DateTimeFormatter FOLDER_DATE_FORMATTER = DateTimeFormatter.ofPattern(FOLDER_DATE_PATTERN);
+
     public static void main(String[] args) {
-        LocalDateTime today =getTodayDate();
-        System.out.println(DATE_FORMATTER.format(today)+" "+TIME_FORMATTER.format(today));
-        System.out.println(calculatePeriod(today, getBirthDate()));
+        LocalDateTime today = getTodayDate();
+        System.out.println(DATE_FORMATTER.format(today) + " " + TIME_FORMATTER.format(today));
+        String dateTimeString = FOLDER_DATE_FORMATTER.format(today)+"_"+FOLDER_TIME_FORMATTER.format(today);
+        createFolder(dateTimeString);
     }
 
+    private static void createFolder(String folderName) {
+        String name = new Object(){}.getClass().getEnclosingMethod().getName();
+        System.out.println(System.getProperty("user.dir"));
+        new File(System.getProperty("user.dir") + "\\dirs\\"+name+"\\"+folderName).mkdirs();
+    }
 
     private static int getValidDate(String value, int length) {
         int output = isNumeric(value);
@@ -38,7 +50,7 @@ public class Main {
         String name = scanner.nextLine().trim();
 
         Period period = Period.between(to.toLocalDate(), from.toLocalDate());
-        System.out.println("BirthDate: "+ DATE_FORMATTER.format(to));
+        System.out.println("BirthDate: " + DATE_FORMATTER.format(to));
         System.out.println(period);
         int years = period.getYears();
         int months = period.getMonths();
@@ -64,7 +76,7 @@ public class Main {
         String MM = String.format("%02d-", month);
         String DD = String.format("%02d", day);
 
-        return LocalDateTime.parse(YY + MM +   DD + "T07:00:00");
+        return LocalDateTime.parse(YY + MM + DD + "T07:00:00");
 
     }
 
