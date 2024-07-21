@@ -8,16 +8,17 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     private static final String ERR_MSG = "Invalid ";
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE MMMM dd, yyyy HH:mm:ss");
     private static final Scanner scanner = new Scanner(System.in);
-
     private static final String YEAR_MSG = "year! Please enter YYYY." ;
     private static final String MONTH_MSG = "month! Please enter MM(1-12).";
     private static final String DAY_MSG = "day! Please enter DD(1-31).";
-
+    private static final String TIME_PATTERN = "hh:mm:ss a";
+    private static final String DATE_PATTERN = "EEEE MMMM dd, yyyy";
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_PATTERN);
     public static void main(String[] args) {
         LocalDateTime today =getTodayDate();
-        System.out.println(formatter.format(today));
+        System.out.println(DATE_FORMATTER.format(today)+" "+TIME_FORMATTER.format(today));
         System.out.println(calculatePeriod(today, getBirthDate()));
     }
 
@@ -37,7 +38,7 @@ public class Main {
         String name = scanner.nextLine().trim();
 
         Period period = Period.between(to.toLocalDate(), from.toLocalDate());
-        System.out.println("BirthDate: "+formatter.format(to));
+        System.out.println("BirthDate: "+ DATE_FORMATTER.format(to));
         System.out.println(period);
         int years = period.getYears();
         int months = period.getMonths();
